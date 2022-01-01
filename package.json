@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "webpack --mode production ",
-    "dev": "webpack --mode development --watch",
-    "build": "cd ./node_modules/makuro_js && npm install",
-    "install": "cd ./node_modules/makuro_js && npm install"
+    "dev": "nodemon . & webpack --mode development --watch",
+    "build": "npm install && cd ./node_modules/makuro_js && npm install"
   },
   "dependencies": {
     "@prisma/client": "^3.5.0",
