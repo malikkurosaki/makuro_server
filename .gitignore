@@ -7,3 +7,5 @@ prisma/
 !node_modules/
 node_modules/*
 !node_modules/makuro_js
+.git
+.gitignore
