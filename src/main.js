@@ -8,7 +8,9 @@ App({
         appBar: AppBar({
             title: Text("Ini Adalah Judulnya")
         }),
-        drawer: Drawer(),
+        drawer: Drawer({
+            drawerHeader: Text("ini drawer header")
+        }),
         body: Column({
             children: [
                 Table({

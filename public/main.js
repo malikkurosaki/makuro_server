@@ -301,9 +301,9 @@ module.exports = {
     TextFormField : __webpack_require__(/*! ./src/text_form_field */ "./node_modules/makuro_js/src/text_form_field.js"),
     Text: __webpack_require__(/*! ./src/text */ "./node_modules/makuro_js/src/text.js"),
     Widget : __webpack_require__(/*! ./src/widget */ "./node_modules/makuro_js/src/widget.js"),
+    IndexStack: __webpack_require__(/*! ./src/index_stack */ "./node_modules/makuro_js/src/index_stack.js")
 
 }
-
 
 
 
@@ -40180,22 +40180,36 @@ module.exports = Container
  * @param {Object} param 
  * @param {HTMLElement} param.drawerHeader
  * @param {HTMLElement} param.drawerBody
+ * @param {() => void} param.close
  * @returns {HTMLElement}
+ * @example
+ * ```
+ * // untuk close drawer manual
+ * var closeDrawer;
+ * 
+ * Drawer({
+ *      close: (close) => closeDrawer = close,
+ *      drawerHeader: ...,
+ *      drawerBody: ...,
+ * })
+ * 
+ * ```
  */
 function Drawer(param){
     let el = $(
         `
             <div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <div class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </div>
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
                         <div class="d-flex flex-row-reverse col">
                             <div></div>
-                            <button type="button" class="btn-close text-reset " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            <div type="button" class="btn-close text-reset " data-bs-dismiss="offcanvas" aria-label="Close"></div>
                         </div>
                     </div>
+                    <div class="drawerHead"></div>
                     <div class="offcanvas-body"></div>
                 </div>
             </div>
@@ -40203,17 +40217,64 @@ function Drawer(param){
     );
 
     if(param && param.drawerHeader){
-        $(el[0].getElementsByClassName("offcanvas-header")).append(param.drawerHeader);
+        $(el[0].getElementsByClassName("drawerHead")).append(param.drawerHeader);
     }
 
     if(param && param.drawerBody){
         $(el[0].getElementsByClassName("offcanvas-body")).append(param.drawerBody);
     }
 
+    if(param && param.close){
+
+        function tutup(){
+            console.log("diditutup");
+            $(el[0].getElementsByClassName("btn-close text-reset")).trigger('click');
+        }
+        param.close(tutup)
+    }
+
     return el;
 }
 
 module.exports = Drawer
+
+/***/ }),
+
+/***/ "./node_modules/makuro_js/src/index_stack.js":
+/*!***************************************************!*\
+  !*** ./node_modules/makuro_js/src/index_stack.js ***!
+  \***************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/makuro_js/node_modules/jquery/dist/jquery.js");
+
+
+/**
+ * 
+ * @param {Object} param 
+ * @param {Number} param.index
+ * @param {HTMLElement[]} param.children
+ */
+function IndexStack(param){
+    let el = $("<div></div>");
+    if(param && param.children){
+        param.children.forEach((elem) => {
+            $(elem).addClass('indexStackItem');
+            $(el).append($(elem))
+        });
+
+        if(param.index != null){
+            
+            $(el[0].getElementsByClassName("indexStackItem")).hide();
+            $(el[0].getElementsByClassName('indexStackItem')[param.index]).show()
+        }
+    }
+
+    return param? el: "IndexStack(?)"
+
+}   
+
+module.exports = IndexStack
 
 /***/ }),
 
@@ -40265,14 +40326,12 @@ const $ = __webpack_require__(/*! jquery */ "./node_modules/makuro_js/node_modul
  * @returns {Obx}
  */
  function Obx(param) {
-    let key = param.state.key;
-
-    let el = document.createElement('div');
+    let el = $("<div></div>");
     if (param && param.builder) el.append(param.builder());
     if (param && param.state) {
-        
+        let key = param.state.key;
        $(document).on(key, function(){
-           el.children[0].replaceWith(param.builder())
+            $(el[0].children).replaceWith(param.builder())
        })
     }
     return el;
@@ -41263,7 +41322,9 @@ App({
         appBar: AppBar({
             title: Text("Ini Adalah Judulnya")
         }),
-        drawer: Drawer(),
+        drawer: Drawer({
+            drawerHeader: Text("ini drawer header")
+        }),
         body: Column({
             children: [
                 Table({
