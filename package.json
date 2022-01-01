@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "webpack --mode production ",
     "dev": "nodemon . & webpack --mode development --watch",
-    "build": "npm install && cd ./node_modules/makuro_js && npm install"
+    "build": "npm install"
   },
   "dependencies": {
     "@prisma/client": "^3.5.0",
@@ -19,7 +19,6 @@
     "express-async-handler": "^1.2.0",
     "html-loader": "^3.0.1",
     "jquery": "^3.6.0",
-    "makuro_js": "github:malikkurosaki/makuro_js",
     "multer": "^1.4.4",
     "popper.js": "^1.16.1",
     "sass": "^1.45.1",

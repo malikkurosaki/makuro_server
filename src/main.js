@@ -1,29 +1,5 @@
-const {App, AppBar, Text, Drawer, Column} = require('makuro_js');
-const Scaffold = require('makuro_js/src/scaffold');
-const Table = require('makuro_js/src/table');
-
-
-App({
-    home: Scaffold({
-        appBar: AppBar({
-            title: Text("Ini Adalah Judulnya")
-        }),
-        drawer: Drawer({
-            drawerHeader: Text("ini drawer header")
-        }),
-        body: Column({
-            children: [
-                Table({
-                    ajaxURL: '/api/user',
-                    autoColumns: true
-                }),
-                Text("ini ada dimana"),
-                Text("ini ada dimana"),
-                Text("ini ada dimana"),
-                Text("ini ada dimana"),
-                Text("ini ada dimana")
-
-            ]
-        })
-    })
-});
+require('../node_modules/tabulator-tables/src/scss/tabulator.scss');
+require('../node_modules/bootstrap/scss/bootstrap.scss');
+require('bootstrap/dist/js/bootstrap.bundle.min');
+require('bootstrap/js/dist/popover');
+require('bootstrap');
